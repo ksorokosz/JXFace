@@ -1,0 +1,35 @@
+Depends on:
+- libjobl-java
+- libgl1-mesa-glx libgl1-mesa-dri xserver-xorg-core
+
+In case OpenGL error on ubuntu please remove:
+fglrx fglrx_* fglrx-amdcccle* fglrx-dev*
+
+Input parameters:
+- face name (stored in faces directory)
+- language name (from the list of availables dictionary)
+- phoneme/viseme file with timestamps
+- path to recording that corresponds to phoneme/viseme file
+
+To record generated animation you may want to configure pulse_monitor device:
+====== ~/.asoundrc file ======
+
+pcm.pulse_monitor {
+  type pulse
+  device alsa_output.pci-0000_00_1b.0.analog-stereo.monitor
+}
+
+ctl.pulse_monitor {
+  type pulse
+  device alsa_output.pci-0000_00_1b.0.analog-stereo.monitor
+}
+
+====== ~/.asoundrc file ======
+
+recordmydesktop --windowid <window-id> --device pulse_monitor
+where <window-id> might be read as:
+xwininfo -name xface-j | grep "Window id" | perl -pe "s|.*Window id: (.*?) .*|\1|"
+
+-------------------------------
+
+To record animation you may want to use xface.sh bash script
