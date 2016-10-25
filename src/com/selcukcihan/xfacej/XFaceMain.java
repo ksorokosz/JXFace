@@ -26,6 +26,7 @@
 package com.selcukcihan.xfacej;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -74,13 +75,14 @@ public class XFaceMain extends Frame
 		XFaceConfiguration config = new XFaceConfiguration(args[argc++], args[argc++]);
 		String pho = args[argc++];
 		String sound = args[argc++];
+		String animation = args[argc++];
 		
 		Frame frame = new Frame("xface-j");
 		frame.setSize(800, 600);
 		frame.setLayout(new BorderLayout());
 	    GLCanvas canvas = new GLCanvas();
-
-	    canvas.addGLEventListener((GLEventListener) new XFaceDriver(canvas, config, pho, sound));
+	    
+	    canvas.addGLEventListener((GLEventListener) new XFaceDriver(canvas, config, pho, sound, animation));
 	    canvas.setAutoSwapBufferMode(true);
 	    frame.add(canvas, BorderLayout.NORTH);
 	    

@@ -26,6 +26,10 @@
 package com.selcukcihan.xfacej;
 
 import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.media.opengl.DebugGL;
 import javax.media.opengl.GL;
@@ -60,10 +64,39 @@ public class XFaceDriver implements GLEventListener
 	private String m_dictionaries;
 	private String m_language;
 	private String m_phoFile;
+	private String m_animationFile;
 	private GLCanvas m_canvas;
 	private TextRenderer m_textRenderer;
+	private Process record_process;
+	private StreamGobbler errorGobbler;
 	
-	public XFaceDriver(GLCanvas p_canvas, XFaceConfiguration p_config, String p_phoFile, String p_soundfile)
+	private class StreamGobbler extends Thread {
+	    InputStream is;
+	    String type;
+
+	    private StreamGobbler(InputStream is, String type) {
+	        this.is = is;
+	        this.type = type;
+	    }
+
+	    @Override
+	    public void run() {
+	        try {
+	            InputStreamReader isr = new InputStreamReader(is);
+	            BufferedReader br = new BufferedReader(isr);
+	            String line = null;
+	            while ((line = br.readLine()) != null)
+	                System.out.println(type + "> " + line);
+	            System.exit(0); // this is hack. In case stderr stream closes it 
+	                            // means that recording script finishes his work ;) and we may close the program.
+	        }
+	        catch (IOException ioe) {
+	            ioe.printStackTrace();
+	        }
+	    }
+	}
+	
+	public XFaceDriver(GLCanvas p_canvas, XFaceConfiguration p_config, String p_phoFile, String p_soundfile, String p_animationFile)
 	{
 		m_canvas = p_canvas;
 		m_face = p_config.getFace();
@@ -72,6 +105,7 @@ public class XFaceDriver implements GLEventListener
 		m_language = p_config.getLanguage();
 		m_phoFile = p_phoFile;
 		m_soundfile = p_soundfile;
+		m_animationFile = p_animationFile;
 	}
 	
 	public void display(GLAutoDrawable p_autoDrawable)
@@ -175,14 +209,31 @@ public class XFaceDriver implements GLEventListener
 				{
 					m_pApp.onResumePlayback(m_gl, m_sound);
 					m_pApp.onStopPlayback(m_gl);
-					System.exit(0);
+					try {
+						Runtime.getRuntime().exec("pkill -INT record-screen*");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		};
 		
+		// execute screen recording
+		executeRecording(m_animationFile);
 		
 		m_animThread.start();
 		m_soundThread.start();
+	}
+
+	public void executeRecording(String filename) {
+	    try {
+	        record_process = new ProcessBuilder("./record-screen.sh", filename).start();
+	        errorGobbler = new StreamGobbler(record_process.getErrorStream(), "ERROR");
+	        errorGobbler.start();
+	        
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	public void reshape(GLAutoDrawable p_autoDrawable, int p_x, int p_y, int p_width, int p_height)

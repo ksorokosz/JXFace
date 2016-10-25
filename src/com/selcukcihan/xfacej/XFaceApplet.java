@@ -16,6 +16,7 @@ public class XFaceApplet extends Applet
 		XFaceConfiguration config = new XFaceConfiguration("alice", "english");
 		String pho = "faces/alice/alice.pho";
 		String sound = "faces/alice/alice.wav";
+		String animation = "faces/alice/alice";
 		
 		//Frame frame = new Frame("xface-j");
 		//XFaceApplet xfaceApplet = new XFaceApplet();
@@ -26,7 +27,7 @@ public class XFaceApplet extends Applet
 	    GLCanvas canvas = new GLCanvas();
 
 	    //canvas.addGLEventListener((GLEventListener) new GLTest());
-	    canvas.addGLEventListener((GLEventListener) new XFaceDriver(canvas, config, pho, sound));
+	    canvas.addGLEventListener((GLEventListener) new XFaceDriver(canvas, config, pho, sound, animation));
 	    canvas.setAutoSwapBufferMode(true);
 	    add(canvas, BorderLayout.NORTH);
 	    //frame.add(new Label("FPS: "), BorderLayout.SOUTH);
