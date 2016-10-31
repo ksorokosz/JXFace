@@ -165,9 +165,8 @@ public class DeformableGeometry extends IndexedFaceSet
 		// self assignment control
 		if (this == rhs) 
 			return this;
-
 		super.copyFrom(rhs);
-
+		
 		m_def_vertices = new Vector3Buffer(rhs.m_def_vertices);
 		m_weightIndices = VectorWrapper.WrapDeformationIndices(rhs.m_weightIndices);
 		m_weights = VectorWrapper.WrapDeformationWeights(rhs.m_weights);

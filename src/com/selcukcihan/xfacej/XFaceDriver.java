@@ -69,6 +69,9 @@ public class XFaceDriver implements GLEventListener
 	private TextRenderer m_textRenderer;
 	private Process record_process;
 	private StreamGobbler errorGobbler;
+	private float red;
+	private float green;
+	private float blue;
 	
 	private class StreamGobbler extends Thread {
 	    InputStream is;
@@ -106,6 +109,9 @@ public class XFaceDriver implements GLEventListener
 		m_phoFile = p_phoFile;
 		m_soundfile = p_soundfile;
 		m_animationFile = p_animationFile;
+		red = p_config.getRed();
+		green = p_config.getGreen();
+		blue = p_config.getBlue();
 	}
 	
 	public void display(GLAutoDrawable p_autoDrawable)
@@ -176,7 +182,7 @@ public class XFaceDriver implements GLEventListener
 		m_gl.glCullFace(GL.GL_BACK);
 		m_gl.glFrontFace(GL.GL_CCW);
 		m_gl.glEnable(GL.GL_CULL_FACE);
-		m_gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		m_gl.glClearColor(red, green, blue, 1.0f);
 		m_gl.glEnable(GL.GL_DEPTH_TEST);
 		m_gl.glEnable(GL.GL_LIGHTING);
 		m_gl.glEnable(GL.GL_LIGHT0);
@@ -210,7 +216,7 @@ public class XFaceDriver implements GLEventListener
 					m_pApp.onResumePlayback(m_gl, m_sound);
 					m_pApp.onStopPlayback(m_gl);
 					try {
-						Runtime.getRuntime().exec("pkill -INT record-screen*");
+						Runtime.getRuntime().exec("pkill record-screen*");
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -218,11 +224,11 @@ public class XFaceDriver implements GLEventListener
 			}
 		};
 		
-		// execute screen recording
-		executeRecording(m_animationFile);
-		
 		m_animThread.start();
 		m_soundThread.start();
+		// execute screen recording
+		executeRecording(m_animationFile);
+				
 	}
 
 	public void executeRecording(String filename) {

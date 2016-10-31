@@ -14,6 +14,6 @@ window_id=`xwininfo -name xface-j | grep "Window id" | perl -pe "s|.*Window id: 
 recordmydesktop --v_bitrate 2000000 --s_quality 10 --no-wm-check --fps 120 --no-cursor --overwrite --windowid $window_id --device pulse_monitor -o $animation &
 recording_pid=$!
 
-trap handler SIGINT
+trap handler SIGINT SIGTERM
 wait $recording_pid
 echo -e "wait recording pid" >&2

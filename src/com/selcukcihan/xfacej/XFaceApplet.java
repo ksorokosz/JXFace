@@ -13,7 +13,7 @@ public class XFaceApplet extends Applet
 	
 	public void init()
 	{
-		XFaceConfiguration config = new XFaceConfiguration("alice", "english");
+		XFaceConfiguration config = new XFaceConfiguration("alice", "english", 0, 0, 0);
 		String pho = "faces/alice/alice.pho";
 		String sound = "faces/alice/alice.wav";
 		String animation = "faces/alice/alice";

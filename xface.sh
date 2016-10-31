@@ -12,10 +12,10 @@ pho_file=$1; shift
 recording=$1; shift
 animation=$1; shift
 
-java -jar XFace.jar $face $language $pho_file $recording &
+java -jar XFace.jar $face $language $pho_file $recording $animation &
 animation_pid=$!
 wait $animation_pid
 
 # Converting to AVI format
-ffmpeg -i $animation.ogv -ab 448k -ar 48000 -vb 448k -vf "crop=790:565:5:5" $animation.avi
+ffmpeg -i $animation.ogv -ab 448k -ar 48000 -vb 448k -vf "crop=790:565:5:5" -y $animation.avi
 rm $animation.ogv

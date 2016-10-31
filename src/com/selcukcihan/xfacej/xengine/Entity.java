@@ -80,7 +80,7 @@ public class Entity
 		// self assignment control
 		if (this == rhs) 
 			return this;
-
+		
 		m_drawables.clear();
 		m_transform = new Transform(rhs.m_transform);
 		

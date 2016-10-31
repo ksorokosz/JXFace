@@ -72,10 +72,17 @@ public class XFaceMain extends Frame
 	public static void main(String[] args)
 	{
 		int argc = 0;
-		XFaceConfiguration config = new XFaceConfiguration(args[argc++], args[argc++]);
+		String face = args[argc++];
+		String language = args[argc++];
 		String pho = args[argc++];
 		String sound = args[argc++];
 		String animation = args[argc++];
+		int red = Integer.parseInt(args[argc++]);
+		int green = Integer.parseInt(args[argc++]);
+		int blue = Integer.parseInt(args[argc++]);
+		// R:0, G:64,B:128, Odc.:140, Nas.:240, Jaskr.:60.
+		
+		XFaceConfiguration config = new XFaceConfiguration(face, language, red, green, blue);
 		
 		Frame frame = new Frame("xface-j");
 		frame.setSize(800, 600);
