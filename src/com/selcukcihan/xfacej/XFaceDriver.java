@@ -216,8 +216,12 @@ public class XFaceDriver implements GLEventListener
 					m_pApp.onResumePlayback(m_gl, m_sound);
 					m_pApp.onStopPlayback(m_gl);
 					try {
+			            Thread.sleep(500, 0);
 						Runtime.getRuntime().exec("pkill record-screen*");
 					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
