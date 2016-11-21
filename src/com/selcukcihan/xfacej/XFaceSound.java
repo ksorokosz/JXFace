@@ -26,14 +26,11 @@
 package com.selcukcihan.xfacej;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import sun.audio.*;
 
 
 public class XFaceSound implements Runnable
@@ -44,27 +41,20 @@ public class XFaceSound implements Runnable
 	}
 	public volatile boolean m_play = false;
 	private String filename;
-	private Clip sound;
 
 	public void run()
 	{		
 		try
 		{
-			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(filename));
-	        DataLine.Info info = new DataLine.Info(Clip.class, inputStream.getFormat());
-	        sound = (Clip)AudioSystem.getLine(info);
-	        sound.open(inputStream);
-	        sound.start();
+			InputStream in = new FileInputStream(this.filename);
+			
+			// create an audiostream from the inputstream
+		    AudioStream audioStream = new AudioStream(in);
+
+		    // play the audio clip with the audioplayer class
+		    AudioPlayer.player.start(audioStream);
 		}
 		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch(LineUnavailableException e )
-		{
-			e.printStackTrace();
-		}
-		catch(UnsupportedAudioFileException e)
 		{
 			e.printStackTrace();
 		}
